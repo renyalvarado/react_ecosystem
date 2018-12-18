@@ -4,7 +4,9 @@
   "description": "Sandbox based on \"Learn Redux with Dan Abramov\" on Egghead",
   "main": "src/index.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage --colors"
   },
   "keywords": [
     "react",
