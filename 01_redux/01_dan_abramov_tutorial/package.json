@@ -1,0 +1,26 @@
+{
+  "name": "01_dan_abramov_tutorial",
+  "version": "1.0.0",
+  "description": "Sandbox based on \"Learn Redux with Dan Abramov\" on Egghead",
+  "main": "src/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react",
+    "redux",
+    "js",
+    "javascript",
+    "es6"
+  ],
+  "author": "Reny Alvarado",
+  "license": "MIT",
+  "devDependencies": {
+    "eslint": "^5.9.0",
+    "eslint-config-standard": "^12.0.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-promise": "^4.0.1",
+    "eslint-plugin-standard": "^4.0.0"
+  }
+}
