@@ -3,20 +3,29 @@
 
 import {counter} from './counter';
 import {createStore} from "redux";
+import React from 'react';
+import ReactDOM from 'react-dom';
 
-const scoreText = document.querySelector('#score');
+const Counter = ({value, onIncrement, onDecrement}) => {
+  return (<div>
+      <h1 id="score">{value}</h1>
+      <button id="add" onClick={onIncrement}>+</button>
+      <button id="subtract" onClick={onDecrement}>-</button>
+    </div>
+  );
+};
+
 const store = createStore(counter);
 const render = () => {
-  scoreText.innerHTML = store.getState();
+  ReactDOM.render(
+    <Counter value={store.getState()}
+             onIncrement={() => {
+               store.dispatch({type: 'INCREMENT'});
+             }}
+            onDecrement={() => {
+              store.dispatch({type: 'DECREMENT'});
+            }}/>,
+    document.getElementById('root'));
 };
 render();
-
-const addButton = document.querySelector('#add');
-const subtractButton = document.querySelector('#subtract');
-addButton.addEventListener('click', () => {
-  store.dispatch({type: 'INCREMENT'});
-});
-subtractButton.addEventListener('click', () => {
-  store.dispatch({type: 'DECREMENT'});
-});
 store.subscribe(render);
