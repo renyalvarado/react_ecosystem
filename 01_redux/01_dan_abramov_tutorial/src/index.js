@@ -1,24 +1,42 @@
 /* eslint-env es6 */
 'use strict';
 
-let score;
+import {counter} from './counter';
 
-const changeScore = (newScore) => {
-  const scoreText = document.querySelector('#score');
-  score = newScore;
-  scoreText.innerHTML = score;
+const createStore = (reducer) => {
+  let state;
+  let listeners = [];
+  const getState = () => state;
+
+  const dispatch = (action) => {
+    state = reducer(state, action);
+    listeners.forEach(listener => listener());
+  };
+
+  const subscribe = (listener) => {
+    listeners.push(listener);
+    return () => {
+      listeners =  listeners.filter(l => l !== listener);
+    };
+  };
+
+  dispatch({});
+  return {getState, dispatch, subscribe};
 };
 
+const scoreText = document.querySelector('#score');
+const store = createStore(counter);
+const render = () => {
+  scoreText.innerHTML = store.getState();
+};
+render();
+
 const addButton = document.querySelector('#add');
-addButton.addEventListener('click', () => {
-  changeScore(score + 1);
-  console.log('Add click');
-});
-
 const subtractButton = document.querySelector('#subtract');
-subtractButton.addEventListener('click', () => {
-  changeScore(score - 1);
-  console.log('Subtract click');
+addButton.addEventListener('click', () => {
+  store.dispatch({type: 'INCREMENT'});
 });
-
-changeScore(0);
+subtractButton.addEventListener('click', () => {
+  store.dispatch({type: 'DECREMENT'});
+});
+store.subscribe(render);
