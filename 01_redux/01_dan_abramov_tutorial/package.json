@@ -6,7 +6,9 @@
   "scripts": {
     "test": "jest",
     "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage --colors"
+    "test:coverage": "jest --coverage --colors",
+    "build": "webpack --mode production --config webpack.config.js",
+    "start": "webpack-dev-server --mode development --open"
   },
   "keywords": [
     "react",
@@ -29,8 +31,12 @@
     "eslint-plugin-node": "^8.0.0",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
+    "html-webpack-plugin": "^3.2.0",
     "jest": "^23.6.0",
-    "regenerator-runtime": "^0.13.1"
+    "regenerator-runtime": "^0.13.1",
+    "webpack": "^4.27.1",
+    "webpack-cli": "^3.1.2",
+    "webpack-dev-server": "^3.1.10"
   },
   "dependencies": {}
 }
