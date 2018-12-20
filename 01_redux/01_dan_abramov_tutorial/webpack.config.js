@@ -9,8 +9,8 @@ module.exports = {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      title: 'Redux Example',
-      favicon: 'public/favicon.ico'
+      favicon: 'public/favicon.ico',
+      template: 'public/index.html'
     })
   ]
 };
