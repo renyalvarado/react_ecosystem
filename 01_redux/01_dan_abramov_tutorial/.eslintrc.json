@@ -1,6 +1,18 @@
 {
-    "extends": ["standard", "plugin:react/recommended"],
+    "extends": [
+        "standard",
+        "plugin:react/recommended"
+    ],
+    "plugins": [
+        "jest"
+    ],
     "rules": {
-        "semi": [2, "always"]
+        "semi": [
+            2,
+            "always"
+        ]
+    },
+    "env": {
+        "jest/globals": true
     }
 }
