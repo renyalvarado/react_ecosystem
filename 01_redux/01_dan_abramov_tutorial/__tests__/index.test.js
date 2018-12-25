@@ -1,3 +1,6 @@
+/* eslint-env es6 */
+'use strict';
+
 import { sum } from '../src/sum';
 
 test('adds 1 + 2 to equal 3', () => {
