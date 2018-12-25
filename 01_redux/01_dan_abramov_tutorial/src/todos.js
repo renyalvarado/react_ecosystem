@@ -40,9 +40,19 @@ export const visibilityFilter = (state = 'SHOW_ALL', action) => {
   }
 };
 
-export const todoApp = (state, action) => {
-  return {
-    todos: todos(state.todos, action),
-    visibilityFilter: visibilityFilter(state.visibilityFilter, action)
+const combineReducers = (reducers) => {
+  return (state, action) => {
+    return Object.keys(reducers).reduce(
+      (nextValue, key) => {
+        nextValue[key] = reducers[key](
+          state[key],
+          action
+        );
+        return nextValue;
+      },
+      {}
+    );
   };
 };
+
+export const todoApp = combineReducers({ todos, visibilityFilter });
