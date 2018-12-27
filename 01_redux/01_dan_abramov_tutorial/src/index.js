@@ -1,32 +1,19 @@
 /* eslint-env es6 */
 'use strict';
 
-import { counter } from './counter';
-import { createStore } from 'redux';
+import { createStore, combineReducers } from 'redux';
 import ReactDOM from 'react-dom';
 import React from 'react';
+import { counter } from './counter';
+import { todos, visibilityFilter } from './todos';
+import Counter from './components/counter';
+import Todo from './components/todo';
 
-import PropTypes from 'prop-types';
-
-const Counter = ({ value, onIncrement, onDecrement }) => {
-  return (<div>
-    <h1 id="score">{value}</h1>
-    <button id="add" onClick={onIncrement}>+</button>
-    <button id="subtract" onClick={onDecrement}>-</button>
-  </div>
-  );
-};
-
-Counter.propTypes = {
-  value: PropTypes.number.isRequired,
-  onIncrement: PropTypes.func.isRequired,
-  onDecrement: PropTypes.func.isRequired
-};
-
-const store = createStore(counter);
-const render = () => {
+const store = createStore(combineReducers({ counter, todos, visibilityFilter }));
+// const store = createStore(todoApp);
+const renderCounter = () => {
   ReactDOM.render(
-    <Counter value={store.getState()}
+    <Counter value={store.getState().counter}
       onIncrement={() => {
         store.dispatch({ type: 'INCREMENT' });
       }}
@@ -35,5 +22,13 @@ const render = () => {
       }} />,
     document.getElementById('root'));
 };
-render();
-store.subscribe(render);
+const renderTodo = () => {
+  ReactDOM.render(
+    <Todo todos={store.getState().todos} store={store}/>,
+    document.getElementById('todo'));
+};
+
+renderCounter();
+renderTodo();
+store.subscribe(renderTodo);
+store.subscribe(renderCounter);

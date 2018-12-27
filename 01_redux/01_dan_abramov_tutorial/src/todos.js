@@ -39,20 +39,3 @@ export const visibilityFilter = (state = 'SHOW_ALL', action) => {
       return state;
   }
 };
-
-const combineReducers = (reducers) => {
-  return (state, action) => {
-    return Object.keys(reducers).reduce(
-      (nextValue, key) => {
-        nextValue[key] = reducers[key](
-          state[key],
-          action
-        );
-        return nextValue;
-      },
-      {}
-    );
-  };
-};
-
-export const todoApp = combineReducers({ todos, visibilityFilter });
