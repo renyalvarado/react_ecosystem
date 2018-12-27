@@ -10,7 +10,6 @@ import Counter from './components/counter';
 import Todo from './components/todo';
 
 const store = createStore(combineReducers({ counter, todos, visibilityFilter }));
-// const store = createStore(todoApp);
 const renderCounter = () => {
   ReactDOM.render(
     <Counter value={store.getState().counter}
@@ -23,8 +22,12 @@ const renderCounter = () => {
     document.getElementById('root'));
 };
 const renderTodo = () => {
+  const p = {
+    ...store.getState(),
+    store: store
+  };
   ReactDOM.render(
-    <Todo todos={store.getState().todos} store={store}/>,
+    <Todo { ...p }/>,
     document.getElementById('todo'));
 };
 
