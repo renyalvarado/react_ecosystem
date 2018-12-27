@@ -9,6 +9,7 @@ export default class Todo extends React.Component {
     super(props);
     this.nextId = 0;
   }
+
   render () {
     return (
       <div>
@@ -27,7 +28,20 @@ export default class Todo extends React.Component {
         <ul>
           {
             this.props.todos.map(todo =>
-              (<li key={todo.id}>{todo.text}</li>)
+              <li
+                key={todo.id}
+                onClick={() => {
+                  this.props.store.dispatch({
+                    type: 'TOGGLE_TODO',
+                    id: todo.id
+                  });
+                }}
+                style={ {
+                  textDecoration: todo.completed ? 'line-through' : 'none',
+                  cursor: 'pointer'
+                }}>
+                {todo.text}
+              </li>
             )}
         </ul>
       </div>);
