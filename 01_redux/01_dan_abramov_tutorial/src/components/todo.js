@@ -40,6 +40,37 @@ const getVisibleTodos = (filter, todos) => {
   }
 };
 
+const TodoItem = ({ onClick, completed, text }) => (
+  <li
+    onClick={onClick}
+    style={ {
+      textDecoration: completed ? 'line-through' : 'none',
+      cursor: 'pointer'
+    }}>
+    {text}
+  </li>
+);
+
+TodoItem.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  completed: PropTypes.bool.isRequired,
+  text: PropTypes.string.isRequired
+};
+
+const TodoList = ({ todos, onClick }) => (
+  <ul>
+    {
+      todos.map(todo =>
+        <TodoItem key={todo.id} {...todo} onClick={() => onClick(todo.id)} />
+      )}
+  </ul>
+);
+
+TodoList.propTypes = {
+  todos: PropTypes.array.isRequired,
+  onClick: PropTypes.func.isRequired
+};
+
 export default class Todo extends React.Component {
   constructor (props) {
     super(props);
@@ -61,25 +92,12 @@ export default class Todo extends React.Component {
         }>
           Add Todo
         </button>
-        <ul>
-          {
-            visibleTodos.map(todo =>
-              <li
-                key={todo.id}
-                onClick={() => {
-                  this.props.store.dispatch({
-                    type: 'TOGGLE_TODO',
-                    id: todo.id
-                  });
-                }}
-                style={ {
-                  textDecoration: todo.completed ? 'line-through' : 'none',
-                  cursor: 'pointer'
-                }}>
-                {todo.text}
-              </li>
-            )}
-        </ul>
+        <TodoList todos={visibleTodos} onClick={id => {
+          this.props.store.dispatch({
+            type: 'TOGGLE_TODO',
+            id: id
+          });
+        }}/>
         <p>
           Show:
           <FilterLink store={this.props.store} visibilityFilter={this.props.visibilityFilter} filter='SHOW_ALL'>
