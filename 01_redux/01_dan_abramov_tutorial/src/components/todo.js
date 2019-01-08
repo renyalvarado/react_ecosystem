@@ -4,46 +4,74 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const FilterLink = ({ onClick, filter, visibilityFilter, children }) => {
-  if (filter === visibilityFilter) {
+const Link = ({ active, children, onClick }) => {
+  if (active) {
     return <span>{children}</span>;
   }
   return (
-    <a href='#'
-      onClick={ e => {
-        e.preventDefault();
-        onClick(filter);
-      }}>
-      {children}
+    <a href='#' onClick={e => {
+      e.preventDefault();
+      onClick();
+    }}> {children}
     </a>
   );
 };
 
-FilterLink.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  filter: PropTypes.string.isRequired,
-  visibilityFilter: PropTypes.string.isRequired,
-  children: PropTypes.node.isRequired
+Link.propTypes = {
+  active: PropTypes.bool.isRequired,
+  children: PropTypes.node.isRequired,
+  onClick: PropTypes.func.isRequired
 };
 
-const Footer = ({ onClick, visibilityFilter }) => (
+class FilterLink extends React.Component {
+  componentDidMount () {
+    const props = this.props;
+    const store = props.store;
+    this.unsubscribe = store.subscribe(() => this.forceUpdate());
+  }
+  componentWillUnmount () {
+    this.unsubscribe();
+  }
+
+  render () {
+    const props = this.props;
+    const store = props.store;
+    const state = store.getState();
+    return (
+      <Link active={props.filter === state} onClick={() => {
+        store.dispatch({
+          type: 'SET_VISIBILITY_FILTER',
+          filter: props.filter
+        });
+      }}>
+        {props.children}
+      </Link>
+    );
+  }
+}
+
+FilterLink.propTypes = {
+  store: PropTypes.object.isRequired,
+  filter: PropTypes.string.isRequired
+};
+
+const Footer = ({ store }) => (
   <p>
     Show:
-    <FilterLink onClick={onClick} visibilityFilter={visibilityFilter} filter='SHOW_ALL'>
+    <FilterLink store={store} filter='SHOW_ALL'>
       All
     </FilterLink> { ' ' }
-    <FilterLink onClick={onClick} visibilityFilter={visibilityFilter} filter='SHOW_ACTIVE'>
+    <FilterLink store={store} filter='SHOW_ACTIVE'>
       Active
     </FilterLink> { ' ' }
-    <FilterLink onClick={onClick} visibilityFilter={visibilityFilter} filter='SHOW_COMPLETED'>
+    <FilterLink store={store} filter='SHOW_COMPLETED'>
       Completed
     </FilterLink> { ' ' }
   </p>
 );
 
 Footer.propTypes = {
-  onClick: PropTypes.func.isRequired,
-  visibilityFilter: PropTypes.string.isRequired
+  store: PropTypes.object.isRequired
 };
 
 const getVisibleTodos = (filter, todos) => {
@@ -126,12 +154,7 @@ const Todo = ({ todos, visibilityFilter, store }) => (
         id: id
       });
     }}/>
-    <Footer visibilityFilter={visibilityFilter} onClick={(filter) => {
-      store.dispatch({
-        type: 'SET_VISIBILITY_FILTER',
-        filter: filter
-      });
-    }}/>
+    <Footer store={store}/>
   </div>
 );
 
