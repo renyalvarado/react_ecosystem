@@ -21,17 +21,10 @@ const renderCounter = () => {
       }} />,
     document.getElementById('root'));
 };
-const renderTodo = () => {
-  const p = {
-    ...store.getState(),
-    store: store
-  };
-  ReactDOM.render(
-    <Todo { ...p }/>,
-    document.getElementById('todo'));
-};
+
+ReactDOM.render(
+  <Todo store={store}/>,
+  document.getElementById('todo'));
 
 renderCounter();
-renderTodo();
-store.subscribe(renderTodo);
 store.subscribe(renderCounter);

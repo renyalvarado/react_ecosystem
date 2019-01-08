@@ -25,26 +25,23 @@ Link.propTypes = {
 
 class FilterLink extends React.Component {
   componentDidMount () {
-    const props = this.props;
-    const store = props.store;
+    const { store } = this.props;
     this.unsubscribe = store.subscribe(() => this.forceUpdate());
   }
   componentWillUnmount () {
     this.unsubscribe();
   }
-
   render () {
-    const props = this.props;
-    const store = props.store;
+    const { store, filter, children } = this.props;
     const state = store.getState();
     return (
-      <Link active={props.filter === state} onClick={() => {
+      <Link active={filter === state.visibilityFilter} onClick={() => {
         store.dispatch({
           type: 'SET_VISIBILITY_FILTER',
-          filter: props.filter
+          filter: filter
         });
       }}>
-        {props.children}
+        {children}
       </Link>
     );
   }
@@ -52,7 +49,8 @@ class FilterLink extends React.Component {
 
 FilterLink.propTypes = {
   store: PropTypes.object.isRequired,
-  filter: PropTypes.string.isRequired
+  filter: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired
 };
 
 const Footer = ({ store }) => (
@@ -116,7 +114,33 @@ TodoList.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
-const AddTodo = ({ onAddClick }) => {
+class VisibleTodoList extends React.Component {
+  componentDidMount () {
+    const { store } = this.props;
+    this.unsubscribe = store.subscribe(() => this.forceUpdate());
+  }
+  componentWillUnmount () {
+    this.unsubscribe();
+  }
+  render () {
+    const { store } = this.props;
+    const state = store.getState();
+    return (
+      <TodoList todos={getVisibleTodos(state.visibilityFilter, state.todos)} onClick={id => {
+        store.dispatch({
+          type: 'TOGGLE_TODO',
+          id: id
+        });
+      }}/>
+    );
+  }
+}
+
+VisibleTodoList.propTypes = {
+  store: PropTypes.object.isRequired
+};
+
+const AddTodo = ({ store }) => {
   let input;
   return (
     <div>
@@ -124,7 +148,11 @@ const AddTodo = ({ onAddClick }) => {
         input = node;
       }}/>
       <button onClick={ () => {
-        onAddClick(input.value);
+        store.dispatch({
+          type: 'ADD_TODO',
+          id: nextId++,
+          text: input.value
+        });
         input.value = '';
       }}>
         Add Todo
@@ -133,34 +161,20 @@ const AddTodo = ({ onAddClick }) => {
 };
 
 AddTodo.propTypes = {
-  onAddClick: PropTypes.func.isRequired
+  store: PropTypes.object.isRequired
 };
 
 let nextId = 0;
 
-const Todo = ({ todos, visibilityFilter, store }) => (
+const Todo = ({ store }) => (
   <div>
-    <AddTodo onAddClick={(text) => {
-      store.dispatch({
-        type: 'ADD_TODO',
-        id: nextId++,
-        text: text
-      });
-    }}/>
-
-    <TodoList todos={getVisibleTodos(visibilityFilter, todos)} onClick={id => {
-      store.dispatch({
-        type: 'TOGGLE_TODO',
-        id: id
-      });
-    }}/>
+    <AddTodo store={store}/>
+    <VisibleTodoList store={store}/>
     <Footer store={store}/>
   </div>
 );
 
 Todo.propTypes = {
-  todos: PropTypes.array.isRequired,
-  visibilityFilter: PropTypes.string.isRequired,
   store: PropTypes.object.isRequired
 };
 
