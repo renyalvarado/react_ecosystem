@@ -53,7 +53,7 @@ FilterLink.propTypes = {
   children: PropTypes.node.isRequired
 };
 
-const Footer = ({ store }) => (
+const Footer = (props, { store }) => (
   <p>
     Show:
     <FilterLink store={store} filter='SHOW_ALL'>
@@ -68,8 +68,8 @@ const Footer = ({ store }) => (
   </p>
 );
 
-Footer.propTypes = {
-  store: PropTypes.object.isRequired
+Footer.contextTypes = {
+  store: PropTypes.object
 };
 
 const getVisibleTodos = (filter, todos) => {
@@ -116,14 +116,14 @@ TodoList.propTypes = {
 
 class VisibleTodoList extends React.Component {
   componentDidMount () {
-    const { store } = this.props;
+    const { store } = this.context;
     this.unsubscribe = store.subscribe(() => this.forceUpdate());
   }
   componentWillUnmount () {
     this.unsubscribe();
   }
   render () {
-    const { store } = this.props;
+    const { store } = this.context;
     const state = store.getState();
     return (
       <TodoList todos={getVisibleTodos(state.visibilityFilter, state.todos)} onClick={id => {
@@ -136,11 +136,11 @@ class VisibleTodoList extends React.Component {
   }
 }
 
-VisibleTodoList.propTypes = {
-  store: PropTypes.object.isRequired
+VisibleTodoList.contextTypes = {
+  store: PropTypes.object
 };
 
-const AddTodo = ({ store }) => {
+const AddTodo = (props, { store }) => {
   let input;
   return (
     <div>
@@ -160,22 +160,18 @@ const AddTodo = ({ store }) => {
     </div>);
 };
 
-AddTodo.propTypes = {
-  store: PropTypes.object.isRequired
+AddTodo.contextTypes = {
+  store: PropTypes.object
 };
 
 let nextId = 0;
 
-const Todo = ({ store }) => (
+const Todo = () => (
   <div>
-    <AddTodo store={store}/>
-    <VisibleTodoList store={store}/>
-    <Footer store={store}/>
+    <AddTodo/>
+    <VisibleTodoList/>
+    <Footer/>
   </div>
 );
-
-Todo.propTypes = {
-  store: PropTypes.object.isRequired
-};
 
 export default Todo;
