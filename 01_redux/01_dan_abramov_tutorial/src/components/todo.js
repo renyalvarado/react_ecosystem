@@ -3,6 +3,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
 
 const Link = ({ active, children, onClick }) => {
   if (active) {
@@ -114,27 +115,19 @@ TodoList.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
-class VisibleTodoList extends React.Component {
-  componentDidMount () {
-    const { store } = this.context;
-    this.unsubscribe = store.subscribe(() => this.forceUpdate());
-  }
-  componentWillUnmount () {
-    this.unsubscribe();
-  }
-  render () {
-    const { store } = this.context;
-    const state = store.getState();
-    return (
-      <TodoList todos={getVisibleTodos(state.visibilityFilter, state.todos)} onClick={id => {
-        store.dispatch({
-          type: 'TOGGLE_TODO',
-          id: id
-        });
-      }}/>
-    );
-  }
-}
+const mapStateToProps = (state) => {
+  return {
+    todos: getVisibleTodos(state.visibilityFilter, state.todos)
+  };
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    onClick: (id) => dispatch({ type: 'TOGGLE_TODO', id: id })
+  };
+};
+
+const VisibleTodoList = connect(mapStateToProps, mapDispatchToProps)(TodoList);
 
 VisibleTodoList.contextTypes = {
   store: PropTypes.object
