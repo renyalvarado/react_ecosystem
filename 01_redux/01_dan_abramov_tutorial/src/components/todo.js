@@ -4,6 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { addTodo, setVisibilityFilter, toggleTodo } from './actions';
 
 const Link = ({ active, children, onClick }) => {
   if (active) {
@@ -33,10 +34,7 @@ const mapStateToLinkProps = (state, ownProps) => {
 const mapDispatchToLinkProps = (dispatch, ownProps) => {
   return {
     onClick: () => {
-      dispatch({
-        type: 'SET_VISIBILITY_FILTER',
-        filter: ownProps.filter
-      });
+      dispatch(setVisibilityFilter(ownProps.filter));
     }
   };
 };
@@ -107,7 +105,7 @@ const mapStateToTodoListProps = (state) => {
 
 const mapDispatchToTodoListProps = (dispatch) => {
   return {
-    onClick: (id) => dispatch({ type: 'TOGGLE_TODO', id: id })
+    onClick: (id) => dispatch(toggleTodo(id))
   };
 };
 
@@ -125,11 +123,7 @@ const AddTodo = ({ dispatch }) => {
         input = node;
       }}/>
       <button onClick={ () => {
-        dispatch({
-          type: 'ADD_TODO',
-          id: nextId++,
-          text: input.value
-        });
+        dispatch(addTodo(input.value));
         input.value = '';
       }}>
         Add Todo
@@ -141,8 +135,6 @@ AddTodo.propTypes = {
 };
 
 const AddTodoFull = connect()(AddTodo);
-
-let nextId = 0;
 
 const Todo = () => (
   <div>
