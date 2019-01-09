@@ -115,25 +115,25 @@ TodoList.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
-const mapStateToProps = (state) => {
+const mapStateToTodoListProps = (state) => {
   return {
     todos: getVisibleTodos(state.visibilityFilter, state.todos)
   };
 };
 
-const mapDispatchToProps = (dispatch) => {
+const mapDispatchToTodoListProps = (dispatch) => {
   return {
     onClick: (id) => dispatch({ type: 'TOGGLE_TODO', id: id })
   };
 };
 
-const VisibleTodoList = connect(mapStateToProps, mapDispatchToProps)(TodoList);
+const VisibleTodoList = connect(mapStateToTodoListProps, mapDispatchToTodoListProps)(TodoList);
 
 VisibleTodoList.contextTypes = {
   store: PropTypes.object
 };
 
-const AddTodo = (props, { store }) => {
+const AddTodo = ({ dispatch }) => {
   let input;
   return (
     <div>
@@ -141,7 +141,7 @@ const AddTodo = (props, { store }) => {
         input = node;
       }}/>
       <button onClick={ () => {
-        store.dispatch({
+        dispatch({
           type: 'ADD_TODO',
           id: nextId++,
           text: input.value
@@ -152,16 +152,17 @@ const AddTodo = (props, { store }) => {
       </button>
     </div>);
 };
-
-AddTodo.contextTypes = {
-  store: PropTypes.object
+AddTodo.propTypes = {
+  dispatch: PropTypes.func.isRequired
 };
+
+const AddTodoFull = connect()(AddTodo);
 
 let nextId = 0;
 
 const Todo = () => (
   <div>
-    <AddTodo/>
+    <AddTodoFull/>
     <VisibleTodoList/>
     <Footer/>
   </div>
