@@ -25,19 +25,15 @@ Link.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
-const mapStateToLinkProps = (state, ownProps) => {
-  return {
-    active: ownProps.filter === state.visibilityFilter
-  };
-};
+const mapStateToLinkProps = (state, ownProps) => ({
+  active: ownProps.filter === state.visibilityFilter
+});
 
-const mapDispatchToLinkProps = (dispatch, ownProps) => {
-  return {
-    onClick: () => {
-      dispatch(setVisibilityFilter(ownProps.filter));
-    }
-  };
-};
+const mapDispatchToLinkProps = (dispatch, ownProps) => ({
+  onClick () {
+    dispatch(setVisibilityFilter(ownProps.filter));
+  }
+});
 const FilterLink = connect(mapStateToLinkProps, mapDispatchToLinkProps)(Link);
 
 const Footer = () => (
@@ -97,17 +93,15 @@ TodoList.propTypes = {
   onClick: PropTypes.func.isRequired
 };
 
-const mapStateToTodoListProps = (state) => {
-  return {
-    todos: getVisibleTodos(state.visibilityFilter, state.todos)
-  };
-};
+const mapStateToTodoListProps = (state) => ({
+  todos: getVisibleTodos(state.visibilityFilter, state.todos)
+});
 
-const mapDispatchToTodoListProps = (dispatch) => {
-  return {
-    onClick: (id) => dispatch(toggleTodo(id))
-  };
-};
+const mapDispatchToTodoListProps = (dispatch) => ({
+  onClick (id) {
+    dispatch(toggleTodo(id));
+  }
+});
 
 const VisibleTodoList = connect(mapStateToTodoListProps, mapDispatchToTodoListProps)(TodoList);
 
