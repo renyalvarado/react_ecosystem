@@ -26,14 +26,15 @@ Link.propTypes = {
 
 class FilterLink extends React.Component {
   componentDidMount () {
-    const { store } = this.props;
+    const { store } = this.context;
     this.unsubscribe = store.subscribe(() => this.forceUpdate());
   }
   componentWillUnmount () {
     this.unsubscribe();
   }
   render () {
-    const { store, filter, children } = this.props;
+    const { store } = this.context;
+    const { filter, children } = this.props;
     const state = store.getState();
     return (
       <Link active={filter === state.visibilityFilter} onClick={() => {
@@ -49,29 +50,28 @@ class FilterLink extends React.Component {
 }
 
 FilterLink.propTypes = {
-  store: PropTypes.object.isRequired,
   filter: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired
 };
 
-const Footer = (props, { store }) => (
+FilterLink.contextTypes = {
+  store: PropTypes.object
+};
+
+const Footer = () => (
   <p>
     Show:
-    <FilterLink store={store} filter='SHOW_ALL'>
+    <FilterLink filter='SHOW_ALL'>
       All
     </FilterLink> { ' ' }
-    <FilterLink store={store} filter='SHOW_ACTIVE'>
+    <FilterLink filter='SHOW_ACTIVE'>
       Active
     </FilterLink> { ' ' }
-    <FilterLink store={store} filter='SHOW_COMPLETED'>
+    <FilterLink filter='SHOW_COMPLETED'>
       Completed
     </FilterLink> { ' ' }
   </p>
 );
-
-Footer.contextTypes = {
-  store: PropTypes.object
-};
 
 const getVisibleTodos = (filter, todos) => {
   switch (filter) {
