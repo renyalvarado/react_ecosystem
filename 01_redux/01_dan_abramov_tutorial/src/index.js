@@ -1,16 +1,15 @@
 /* eslint-env es6 */
 'use strict';
 
-import { createStore, combineReducers } from 'redux';
+import { createStore } from 'redux';
 import ReactDOM from 'react-dom';
 import React from 'react';
 import { Provider } from 'react-redux';
-import { counter } from './counter';
-import { todos, visibilityFilter } from './todos';
+import allReducers from './reducers/index';
 import Counter from './components/counter';
 import Todo from './components/todo';
 
-const store = createStore(combineReducers({ counter, todos, visibilityFilter }));
+const store = createStore(allReducers);
 const renderCounter = () => {
   ReactDOM.render(
     <Counter value={store.getState().counter}

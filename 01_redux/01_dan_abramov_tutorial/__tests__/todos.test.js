@@ -2,7 +2,8 @@
 'use strict';
 
 import deepFreeze from 'deep-freeze';
-import { todos, visibilityFilter, todoApp } from '../src/todos';
+import { todos, visibilityFilter } from '../src/reducers/todos';
+import allReducers from '../src/reducers';
 
 test('Add to-do', () => {
   const stateBefore = [];
@@ -62,6 +63,7 @@ test('Visibility filter', () => {
 test('Todo full reducer', () => {
   const initialState = {};
   const stateAfterAddTodo = {
+    counter: 0,
     todos: [{
       id: 0,
       text: 'Learn Redux',
@@ -76,8 +78,9 @@ test('Todo full reducer', () => {
   };
   deepFreeze(initialState);
   deepFreeze(addTodoAction);
-  expect(todoApp(initialState, addTodoAction)).toEqual(stateAfterAddTodo);
+  expect(allReducers(initialState, addTodoAction)).toEqual(stateAfterAddTodo);
   const stateAfterToggleTodo = {
+    counter: 0,
     todos: [{
       id: 0,
       text: 'Learn Redux',
@@ -89,8 +92,9 @@ test('Todo full reducer', () => {
     type: 'TOGGLE_TODO',
     id: 0
   };
-  expect(todoApp(stateAfterAddTodo, actionToggleTodo)).toEqual(stateAfterToggleTodo);
+  expect(allReducers(stateAfterAddTodo, actionToggleTodo)).toEqual(stateAfterToggleTodo);
   const stateAfterSetVisibilityFilter = {
+    counter: 0,
     todos: [{
       id: 0,
       text: 'Learn Redux',
@@ -102,5 +106,5 @@ test('Todo full reducer', () => {
     type: 'SET_VISIBILITY_FILTER',
     filter: 'SHOW_COMPLETED'
   };
-  expect(todoApp(stateAfterToggleTodo, actionSetVisibilityFilter)).toEqual(stateAfterSetVisibilityFilter);
+  expect(allReducers(stateAfterToggleTodo, actionSetVisibilityFilter)).toEqual(stateAfterSetVisibilityFilter);
 });

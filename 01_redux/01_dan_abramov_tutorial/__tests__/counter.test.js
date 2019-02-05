@@ -1,7 +1,7 @@
 /* eslint-env es6 */
 'use strict';
 
-import { counter, addCounter, removeCounter, incrementCounter } from '../src/counter';
+import { counter, addCounter, removeCounter, incrementCounter } from '../src/reducers/counter';
 import deepFreeze from 'deep-freeze';
 
 test('Counter function', () => {
