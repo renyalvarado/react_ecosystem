@@ -9,7 +9,19 @@ import allReducers from './reducers/index';
 import Counter from './components/counter';
 import Todo from './components/todo';
 
-const store = createStore(allReducers);
+/* eslint-disable no-underscore-dangle */
+const store = createStore(allReducers,
+  {
+    counter: 30,
+    todos: [{
+      id: 0,
+      text: 'Learn Redux',
+      completed: true
+    }]
+  },
+  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+);
+/* eslint-enable */
 const renderCounter = () => {
   ReactDOM.render(
     <Counter value={store.getState().counter}
