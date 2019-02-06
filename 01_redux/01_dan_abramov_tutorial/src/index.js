@@ -1,6 +1,6 @@
 /* eslint-env es6 */
 'use strict';
-
+import throttle from 'lodash/throttle';
 import { createStore } from 'redux';
 import ReactDOM from 'react-dom';
 import React from 'react';
@@ -17,10 +17,10 @@ const store = createStore(allReducers,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 );
 /* eslint-enable */
-store.subscribe(() => saveState({
+store.subscribe(throttle(() => saveState({
   counter: store.getState().counter,
   todos: store.getState().todos
-}));
+}), 1000));
 const renderCounter = () => {
   ReactDOM.render(
     <Counter value={store.getState().counter}
