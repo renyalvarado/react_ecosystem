@@ -1,9 +1,10 @@
 /* eslint-env es6 */
 'use strict';
-let nextId = 0;
+const v4 = require('uuid/v4');
+
 export const addTodo = (text) => ({
   type: 'ADD_TODO',
-  id: nextId++,
+  id: v4(),
   text: text
 });
 
