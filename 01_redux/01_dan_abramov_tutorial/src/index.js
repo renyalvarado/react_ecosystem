@@ -1,26 +1,14 @@
 /* eslint-env es6 */
 'use strict';
-import throttle from 'lodash/throttle';
-import { createStore } from 'redux';
+
 import ReactDOM from 'react-dom';
 import React from 'react';
-import { Provider } from 'react-redux';
-import allReducers from './reducers/index';
 import Counter from './components/counter';
-import Todo from './components/todo';
-import { loadState, saveState } from './localStorage';
+import Root from './components/Root';
+import configureStore from './configureStore';
 
-const preLoadedState = loadState();
-/* eslint-disable no-underscore-dangle */
-const store = createStore(allReducers,
-  preLoadedState,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-);
-/* eslint-enable */
-store.subscribe(throttle(() => saveState({
-  counter: store.getState().counter,
-  todos: store.getState().todos
-}), 1000));
+const store = configureStore();
+
 const renderCounter = () => {
   ReactDOM.render(
     <Counter value={store.getState().counter}
@@ -34,9 +22,7 @@ const renderCounter = () => {
 };
 
 ReactDOM.render(
-  <Provider store={store}>
-    <Todo/>
-  </Provider>,
+  <Root store={store}/>,
   document.getElementById('todo'));
 
 renderCounter();
