@@ -24,5 +24,8 @@ module.exports = {
       favicon: 'public/favicon.ico',
       template: 'public/index.html'
     })
-  ]
+  ],
+  devServer: {
+    historyApiFallback: true
+  }
 };
