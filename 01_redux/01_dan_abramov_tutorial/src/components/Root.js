@@ -2,12 +2,15 @@
 'use strict';
 import React from 'react';
 import { Provider } from 'react-redux';
+import { Router, Route, browserHistory } from 'react-router';
 import Todo from './Todo';
 import PropTypes from 'prop-types';
 
 const Root = ({ store }) => (
   <Provider store={store}>
-    <Todo/>
+    <Router history={browserHistory}>
+      <Route path="/" component={Todo} />
+    </Router>
   </Provider>
 );
 
