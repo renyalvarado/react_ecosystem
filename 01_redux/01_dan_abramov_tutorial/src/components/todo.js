@@ -4,7 +4,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { addTodo, setVisibilityFilter, toggleTodo } from './actions';
+import { addTodo, setVisibilityFilter, toggleTodo } from '../actions/actions';
 
 const Link = ({ active, children, onClick }) => {
   if (active) {
