@@ -1,20 +1,25 @@
 /* eslint-env es6 */
 'use strict';
 
-import { connect } from 'react-redux';
-import Link from './Link';
-import { setVisibilityFilter } from '../actions/actions';
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router';
 
-const mapStateToLinkProps = (state, ownProps) => ({
-  active: ownProps.filter === state.visibilityFilter
-});
+const FilterLink = ({ filter, children }) => (
+  <Link
+    to={filter === 'all' ? '' : filter}
+    activeStyle={{
+      textDecoration: 'none',
+      color: 'black'
+    }}
+  >
+    {children}
+  </Link>
+);
 
-const mapDispatchToLinkProps = (dispatch, ownProps) => ({
-  onClick () {
-    dispatch(setVisibilityFilter(ownProps.filter));
-  }
-});
-
-const FilterLink = connect(mapStateToLinkProps, mapDispatchToLinkProps)(Link);
+FilterLink.propTypes = {
+  filter: PropTypes.oneOf(['all', 'completed', 'active']).isRequired,
+  children: PropTypes.node.isRequired
+};
 
 export default FilterLink;

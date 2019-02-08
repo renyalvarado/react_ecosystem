@@ -9,7 +9,7 @@ import PropTypes from 'prop-types';
 const Root = ({ store }) => (
   <Provider store={store}>
     <Router history={browserHistory}>
-      <Route path="/" component={Todo} />
+      <Route path="/(:filter)" component={Todo} />
     </Router>
   </Provider>
 );
