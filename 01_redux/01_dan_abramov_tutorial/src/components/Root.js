@@ -2,7 +2,7 @@
 'use strict';
 import React from 'react';
 import { Provider } from 'react-redux';
-import Todo from './todo';
+import Todo from './Todo';
 import PropTypes from 'prop-types';
 
 const Root = ({ store }) => (
