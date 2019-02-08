@@ -1,3 +1,6 @@
+/* eslint-env es6 */
+'use strict';
+
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router';
 import { toggleTodo } from '../actions/actions';

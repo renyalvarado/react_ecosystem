@@ -1,5 +1,6 @@
 /* eslint-env es6 */
 'use strict';
+
 import React from 'react';
 import { Provider } from 'react-redux';
 import { Router, Route, browserHistory } from 'react-router';
