@@ -3,7 +3,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import { addTodo } from '../actions/actions';
+import { addTodo } from '../actions';
 
 const AddTodo = ({ dispatch }) => {
   let input;

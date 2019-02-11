@@ -2,23 +2,16 @@
 'use strict';
 
 import React from 'react';
-import PropTypes from 'prop-types';
 import Footer from './Footer';
 import VisibleTodoList from './VisibleTodoList';
 import AddTodoFull from './AddTodoFull';
 
-const Todo = ({ params }) => (
+const Todo = () => (
   <div>
     <AddTodoFull/>
-    <VisibleTodoList filter={params.filter || 'all'}/>
+    <VisibleTodoList/>
     <Footer/>
   </div>
 );
-
-Todo.propTypes = {
-  params: PropTypes.shape({
-    filter: PropTypes.string
-  })
-};
 
 export default Todo;

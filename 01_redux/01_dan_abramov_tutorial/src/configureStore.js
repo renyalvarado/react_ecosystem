@@ -14,7 +14,7 @@ const addLoggingToDispatch = (store) => {
     console.log('%c action', 'color: blue', action);
     const returnValue = rawDispatch(action);
     console.log('%c next state', 'color: green', store.getState());
-    console.groupEnd(action.type);
+    console.groupEnd();
     return returnValue;
   };
 };

@@ -6,9 +6,6 @@ import React from 'react';
 import Counter from './components/counter';
 import Root from './components/Root';
 import configureStore from './configureStore';
-import { fetchTodos } from './api';
-
-fetchTodos('all').then(todos => console.log(todos));
 
 const store = configureStore();
 
