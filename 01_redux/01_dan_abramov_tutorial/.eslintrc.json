@@ -12,6 +12,12 @@
             "always"
         ]
     },
+    "settings": {
+        "react": {
+            "pragma": "React",
+            "version": "detect"
+        }
+    },
     "env": {
         "jest/globals": true
     }
