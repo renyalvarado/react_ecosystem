@@ -19,6 +19,16 @@ const addLoggingToDispatch = (store) => {
   };
 };
 
+const addPromiseSupportToDispatch = (store) => {
+  const rawDispatch = store.dispatch;
+  return (action) => {
+    if (typeof action.then === 'function') {
+      return action.then(rawDispatch);
+    }
+    return rawDispatch(action);
+  };
+};
+
 const configureStore = () => {
   /* eslint-disable no-underscore-dangle */
   const store = createStore(allReducers,
@@ -28,6 +38,7 @@ const configureStore = () => {
     store.dispatch = addLoggingToDispatch(store);
   }
   /* eslint-enable */
+  store.dispatch = addPromiseSupportToDispatch(store);
   return store;
 };
 

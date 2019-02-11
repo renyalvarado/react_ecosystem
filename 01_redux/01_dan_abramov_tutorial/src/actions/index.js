@@ -1,5 +1,7 @@
 /* eslint-env es6 */
 'use strict';
+
+import * as api from '../api';
 const v4 = require('uuid/v4');
 
 export const addTodo = (text) => ({
@@ -13,8 +15,13 @@ export const toggleTodo = (id) => ({
   id: id
 });
 
-export const receiveTodos = (filter, response) => ({
+const receiveTodos = (filter, response) => ({
   type: 'RECEIVE_TODOS',
   filter,
   response
 });
+
+export const fetchTodos = (filter) =>
+  api.fetchTodos(filter).then(response =>
+    receiveTodos(filter, response)
+  );
